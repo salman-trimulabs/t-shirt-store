@@ -8,6 +8,7 @@ const Theme = {
       colors: {
         brand: "#D3923C",
         active: "#D3923C",
+        "light-active": "#E1B46E",
         inactive: "#A0A9BA",
         "light-white": "#F0F1F4",
         "text-black": "#2D2A27",

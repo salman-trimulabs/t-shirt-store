@@ -1,4 +1,4 @@
-import { PRE_REQUEST, POST_REQUEST, ADD_PRODUCTS } from '../utils/constants'
+import { PRE_REQUEST, POST_REQUEST, ADD_PRODUCTS } from '../../utils/constants'
 ;
 const reducer = (state = { products : [] , loading : false }, action) => {
   switch (action.type) {

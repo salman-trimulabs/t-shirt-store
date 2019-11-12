@@ -5,6 +5,7 @@ import React, { Component, Fragment } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Grid, Box, ResponsiveContext } from "grommet";
 import Routes from "../utils/constants/Routes";
+import Header from "../components/Header";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -23,13 +24,15 @@ class AppRouter extends Component {
                 <Grid
                   fill
                   rows={["auto", "flex"]}
-                  columns={["auto", "flex"]}
+                  columns={["flex"]}
                   areas={[
-                    { name: "header", start: [0, 0], end: [1, 0] },
-                    { name: "main", start: [1, 0], end: [1, 1] }
+                    { name: "header", start: [0, 0], end: [0, 0] },
+                    { name: "main", start: [0, 1], end: [0, 1] }
                   ]}
                 >
+                  <Header fill gridArea="header" />
                   <Box
+                    fill
                     gridArea="main"
                     pad={{
                       horizontal: size === "small" ? "medium" : "large",

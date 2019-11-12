@@ -15,12 +15,15 @@ const ImageContainer = styled(Box)`
 `;
 
 class ProductItem extends Component {
+  onViewProductClick(item){
+    let path = `/detail/${item.product_id}`;
+    this.props.router.history.push(path);
+  }
+
   render() {
     const { gridArea } = this.props;
-    console.log(this.props.item);
     return (
       <ProductItemWrapper
-        onClick={this.props.onItemClick}
         round="0.25rem"
         elevation="medium"
         gridArea={gridArea}
@@ -88,7 +91,7 @@ class ProductItem extends Component {
                 fontSize: "1.3rem",
                 color: Theme.global.colors["active"]
               }}
-              onClick={() => {}}
+              onClick={this.props.onItemClick}
               hoverIndicator="light-2"
             />
           </Box>

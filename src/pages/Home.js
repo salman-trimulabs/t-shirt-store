@@ -11,7 +11,7 @@ import styled from "styled-components";
 import Theme from "../theme/theme";
 import ProductItem from "../components/ProductCard";
 import { Search } from "grommet-icons";
-import fetchProducts from "../actions/ProductActions";
+import fetchProducts from "../redux/types/ProductActions";
 import { connect } from "react-redux";
 
 const CardContainer = styled.div`
@@ -102,7 +102,10 @@ class HomePage extends Component {
     this.props.getProducts();
   }
 
-  onProductItemClick = item => {};
+  onProductItemClick = item => {
+    let path = `/detail/${item.product_id}`;
+    this.props.history.push(path);
+  };
 
   render() {
     return (
@@ -154,7 +157,8 @@ class HomePage extends Component {
               {this.props.products.map((item, index) => {
                 return (
                   <ProductItem
-                    key={item.key} item = {item}
+                  onItemClick={this.onProductItemClick.bind(this,item)}
+                    key={item.key} item = {item} router= {this.router}
                   />
                 );
               })}
@@ -167,7 +171,7 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: state.products
+  products: state.productReducer.products
 });
 
 const mapDispatchToProps = {
