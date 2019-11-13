@@ -1,18 +1,15 @@
 import React, { Component, Fragment } from "react";
 import {
-  Text,
-  Box,
   Heading,
-  ResponsiveContext,
-  TextInput,
-  Select
+  ResponsiveContext
 } from "grommet";
 import styled from "styled-components";
 import Theme from "../theme/theme";
 import ProductItem from "../components/ProductCard";
-import { Search } from "grommet-icons";
-import fetchProducts from "../redux/types/ProductActions";
+import {fetchProducts} from "../redux/types/ProductActions";
 import { connect } from "react-redux";
+import FilterContainer from "../components/FilterProducts"
+import selectProduct from '../selector/SelectProduct';
 
 const CardContainer = styled.div`
   display: grid;
@@ -28,85 +25,23 @@ const CardContainer = styled.div`
   }
   grid-gap: 2.75rem;
 `;
-const FilterContainer = styled(Box)`
-  width: "100%";
-  margin-bottom: 5.8rem;
-  margin-top: 3rem;
 
-  @media only screen and (max-width: 1050px) {
-    flex-direction: column;
-    margin-bottom: 1em;
-    margin-right: 0;
-  }
-`;
-
-const SearchWrapper = styled.div`
-  width: 34rem;
-  @media only screen and (max-width: 1140px) {
-    width: 100%;
-  }
-`;
-
-const SearchBarWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 3rem;
-
-  & > svg {
-    position: absolute;
-    top: 0.8rem;
-    right: 0.8rem;
-  }
-
-  input {
-    padding-right: 2.5rem;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-`;
-
-const OrderWrapper = styled.div`
-  width: 13rem;
-  padding-top: 0;
-  padding-right: 0;
-
-  input {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-  button {
-    width: 13rem;
-    height: 3rem;
-  }
-
-  @media only screen and (max-width: 1140px) {
-    width: 100%;
-
-    button {
-      width: 100%;
-      height: 3rem;
-    }
-  }
-`;
 
 class HomePage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      order: ["All"]
-    };
-  }
 
   componentDidMount() {
-    console.log(this.props.match.params.id)
-    this.props.getProducts(this.props.match.params.id===undefined? 1: this.props.match.params.id);
+    this.props.getProducts(this.props.match.params.id===undefined? 1: this.props.match.params.id);  
   }
 
   onProductItemClick = item => {
     let path = `/detail/${item.product_id}`;
     this.props.history.push(path);
   };
+
+  onNavigateToRoot = path => {
+    this.props.history.push(path);
+  };
+
 
   render() {
     return (
@@ -123,43 +58,14 @@ class HomePage extends Component {
             >
               Home
             </Heading>
-
-            <FilterContainer direction="row" justify="between" align="center">
-              <SearchWrapper>
-                <Text>Search</Text>
-                <SearchBarWrapper>
-                  <TextInput
-                    placeholder={"Search Species"}
-                    //  value={accents(value, true)}
-                    // onChange={event => this.setValue(event.target.value)}
-                    //onSelect={event => this.onSelect(accents(event.suggestion, false))}
-                    // suggestions={this.addAccents(suggestions)}
-                    dropHeight={"small"}
-                    size={"medium"}
-                  />
-                  <Search color={Theme.global.colors.active} />
-                </SearchBarWrapper>
-              </SearchWrapper>
-
-              <OrderWrapper>
-                <Text>Order</Text>
-
-                <Select
-                  placeholder={"All"}
-                  options={this.state.order}
-                  value={this.state.selectedOrder}
-                  onChange={({ option }) =>
-                    this.setState({ selectedOrder: option })
-                  }
-                />
-              </OrderWrapper>
-            </FilterContainer>
+            <FilterContainer/>
             <CardContainer size={size}>
               {this.props.products.map((item, index) => {
                 return (
                   <ProductItem
                     key={item.product_id}
                     onItemClick={this.onProductItemClick.bind(this, item)}
+                    onLogoClick={this.onNavigateToRoot.bind(this)}
                     item={item}
                   />
                 );
@@ -173,7 +79,7 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: state.productReducer.products
+  products: selectProduct(state.productReducer.products, state.filter)
 });
 
 const mapDispatchToProps = {

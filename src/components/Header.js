@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Box, Heading, Button } from "grommet";
 import Theme from "../theme/theme";
-import { Cart } from "grommet-icons";
+import { Cart, Bold } from "grommet-icons";
+import styled from "styled-components";
+
+const HeaderButton = styled(Button)`
+  color: ${Theme.global.colors["white"]};
+`;
 
 export default class Header extends Component {
-  onCategorySelected(title, page){
-   
-  }
-
   render() {
     return (
       <Box
@@ -17,17 +18,18 @@ export default class Header extends Component {
         pad="small"
         justify="between"
       >
-        <Heading
-          margin="none"
+        <Button
+          pad="small"
           alignSelf="center"
-          align="center"
-          alignContent="center"
-          textAlign="center"
-          level={2}
-          color={Theme.global.colors["white"]}
-        >
-          T-Shirt Store
-        </Heading>
+          hoverIndicator="#F2B447"
+          label= "T-Shirt Store"
+          style={{
+            fontSize: "2rem",
+            fontWeight: "bold",
+            color: "#fff"
+          }}
+          // onClick={() => {this.props.onLogoClick('/')}}
+        />
 
         <Box
           wrap
@@ -36,77 +38,46 @@ export default class Header extends Component {
           alignContent={"center"}
           direction="row"
         >
-          <Button
-            plain
+          <HeaderButton
             label="Men"
-            align={"center"}
-            margin={{
-              right: "2rem"
+            onClick={() => {
+              this.props.onItemClick(1);
             }}
-            style={{
-              fontSize: "1.3rem",
-              color: Theme.global.colors["white"]
-            }}
-            onClick={() => {this.props.onItemClick(1)}}
             hoverIndicator="#F2B447"
           />
 
-          <Button
-            plain
+          <HeaderButton
             label="Women"
-            align={"center"}
-            margin={{
-              right: "2rem"
+            onClick={() => {
+              this.props.onItemClick(2);
             }}
-            style={{
-              fontSize: "1.3rem",
-              color: Theme.global.colors["white"]
-            }}
-            onClick={() => {this.props.onItemClick(2)}}
             hoverIndicator="#F2B447"
           />
 
-          <Button
-            plain
+          <HeaderButton
             label="Kids"
-            align={"center"}
-            margin={{
-              right: "2rem"
+            onClick={() => {
+              this.props.onItemClick(3);
             }}
-            style={{
-              fontSize: "1.3rem",
-              color: Theme.global.colors["white"]
-            }}
-            onClick={() => {this.props.onItemClick(3)}}
             hoverIndicator="#F2B447"
           />
 
-          <Button
-            plain
+          <HeaderButton
             label="Shoes"
-            align={"center"}
-            style={{
-              fontSize: "1.3rem",
-              color: Theme.global.colors["white"]
+            onClick={() => {
+              this.props.onItemClick(4);
             }}
-            onClick={() => {this.props.onItemClick(4)}}
             hoverIndicator="#F2B447"
           />
 
-          <Button
-            plain
-            align={"center"}
+          <HeaderButton
             gap="small"
             margin={{
-                left: "2rem"
+              left: "2rem"
             }}
-            icon={<Cart/>}
-            style={{
-              fontSize: "1.3rem",
-              color: Theme.global.colors["white"]
-            }}
-            onClick={() => {}}
+            icon={<Cart color={Theme.global.colors["white"]} />}
             hoverIndicator="#F2B447"
+            onClick={() => {}}
           />
         </Box>
       </Box>

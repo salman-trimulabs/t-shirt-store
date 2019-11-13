@@ -6,6 +6,7 @@
     "grommet": "^2.8.0",
     "grommet-icons": "^4.4.0",
     "grommet-styles": "^0.2.0",
+    "history": "^4.10.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.3",

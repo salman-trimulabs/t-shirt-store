@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import fetchProduct from "../redux/types/ProductDetail";
+import { fetchProduct } from "../redux/types/ProductActions";
 import {
   ResponsiveContext,
   Box,
@@ -40,15 +40,21 @@ const TopDetailGrid = styled.div`
 `;
 
 class ProductDetail extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      quantity: 1,
+      defaultSize: "Medium",
+      sizes: ["Small", "Medium", "Large"]
+    };
+  }
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
   }
 
   render() {
-    console.log("../assets/images/" + this.props.product.thumbnail)
+    console.log("../assets/images/" + this.props.product.thumbnail);
     return (
-      
       <ResponsiveContext.Consumer>
         {size => (
           <Fragment>
@@ -63,8 +69,12 @@ class ProductDetail extends Component {
                   <Image
                     className="GridLeft"
                     fit="cover"
-                    src={this.props.product.thumbnail ? require("../assets/images/" + this.props.product.thumbnail) : 
-                    require("../assets/images/" + "imageholder.png")}
+                    src={
+                      this.props.product.thumbnail
+                        ? require("../assets/images/" +
+                            this.props.product.thumbnail)
+                        : require("../assets/images/" + "imageholder.png")
+                    }
                   />
                 </Box>
                 <div className="GridRight">
@@ -78,7 +88,7 @@ class ProductDetail extends Component {
                     }}
                     level={2}
                   >
-                  {this.props.product.name}
+                    {this.props.product.name}
                   </Heading>
                   <Heading
                     margin={{
@@ -90,7 +100,7 @@ class ProductDetail extends Component {
                     color={Theme.global.colors["active"]}
                     size="2rem"
                   >
-                  {this.props.product.price + " $"}
+                    {this.props.product.price + " $"}
                   </Heading>
 
                   <Heading
@@ -111,13 +121,13 @@ class ProductDetail extends Component {
                     responsive={true}
                     textAlign={"start"}
                     margin={{
-                        top: "0",
-                        bottom: "xxsmall",
-                        left: "0",
-                        right: "0"
-                      }}
+                      top: "0",
+                      bottom: "xxsmall",
+                      left: "0",
+                      right: "0"
+                    }}
                   >
-                  {this.props.product.description}
+                    {this.props.product.description}
                   </Paragraph>
                   <Box>
                     <Heading
@@ -132,7 +142,15 @@ class ProductDetail extends Component {
                     >
                       Quantity
                     </Heading>
-                    <TextInput placeholder="Enter Quantity" label="Quantity" type="Number"/>
+                    <TextInput
+                      placeholder="Enter Quantity"
+                      label="Quantity"
+                      type="Number"
+                      value={this.state.quantity}
+                      onChange={event => {
+                        this.setState({ quantity: event.target.value <= 0 ? 1 : event.target.value });
+                      }}
+                    />
 
                     <Heading
                       level={4}
@@ -147,9 +165,13 @@ class ProductDetail extends Component {
                       Size
                     </Heading>
                     <Select
-                      options={["small", "medium", "large"]}
-                      //   value={value}
-                      //   onChange={({ option }) => setValue(option)}
+                      options={this.state.sizes}
+                      value={this.state.defaultSize}
+                      onChange={option => {
+                        this.setState({
+                          defaultSize: option.value
+                        });
+                      }}
                     />
                   </Box>
 
@@ -186,7 +208,4 @@ const mapDispatchToProps = {
   getProduct: fetchProduct
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);

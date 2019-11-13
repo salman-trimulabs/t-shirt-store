@@ -11,12 +11,13 @@ const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
 }`;
-export const history = createBrowserHistory()
+export const history =  createBrowserHistory({forceRefresh:true})
 class AppRouter extends Component {
   onHeaderItemClick = page =>{
     let path = `/${page}`;
     history.push(path);
   }
+
   render() {
     return (
       <BrowserRouter>
