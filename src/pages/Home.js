@@ -99,7 +99,8 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    this.props.getProducts();
+    console.log(this.props.match.params.id)
+    this.props.getProducts(this.props.match.params.id===undefined? 1: this.props.match.params.id);
   }
 
   onProductItemClick = item => {
@@ -157,8 +158,9 @@ class HomePage extends Component {
               {this.props.products.map((item, index) => {
                 return (
                   <ProductItem
-                  onItemClick={this.onProductItemClick.bind(this,item)}
-                    key={item.key} item = {item} router= {this.router}
+                    key={item.product_id}
+                    onItemClick={this.onProductItemClick.bind(this, item)}
+                    item={item}
                   />
                 );
               })}
@@ -178,7 +180,4 @@ const mapDispatchToProps = {
   getProducts: fetchProducts
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

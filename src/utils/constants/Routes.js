@@ -3,7 +3,7 @@ import ProductDetail from "../../pages/ProductDetail";
 
 const Routes = [
   {
-    path: "/",
+    path: ["/", "/:id"],
     name: "home",
     exact: true,
     component: HomePage
@@ -14,6 +14,7 @@ const Routes = [
     exact: true,
     component: ProductDetail
   }
+
 ];
 
 export default Routes;

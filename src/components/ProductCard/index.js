@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box, Image, Heading, Button, Grid } from "grommet";
+import { Box, Image, Heading, Button } from "grommet";
 import styled from "styled-components";
 import Theme from "../../theme/theme";
 import { Cart, View } from "grommet-icons";
@@ -15,11 +15,6 @@ const ImageContainer = styled(Box)`
 `;
 
 class ProductItem extends Component {
-  onViewProductClick(item){
-    let path = `/detail/${item.product_id}`;
-    this.props.router.history.push(path);
-  }
-
   render() {
     const { gridArea } = this.props;
     return (
@@ -54,7 +49,7 @@ class ProductItem extends Component {
             <Heading
               style={{
                 fontSize: "1.3rem",
-                color: Theme.global.colors["text-black"]
+                color: Theme.global.colors["active"]
               }}
               margin="none"
               textAlign="start"
@@ -73,30 +68,37 @@ class ProductItem extends Component {
             {this.props.item.description}
           </TextEllipsis>
         </Box>
-        <Grid
-          rows={["xxsmall"]}
-          columns={["xxsmall, xxsmall"]}
-          areas={[["left", "right"]]}
-          gap="none"
-          align="end"
-        >
-          <Box gridArea="left" alignSelf="center" pad="none">
+        <Box direction="row" height="3.2rem" justify="between">
+          <Box
+            background={Theme.global.colors.active}
+            pad="small"
+            alignContent="center"
+            style={{
+              borderBottomLeftRadius: "0.25rem"
+            }}
+          >
             <Button
               plain
               color={Theme.global.colors["text-black"]}
               label="View Details"
               textAlign="center"
-              icon={<View color={Theme.global.colors["active"]} />}
+              icon={<View color={Theme.global.colors["text-black"]} />}
               style={{
                 fontSize: "1.3rem",
-                color: Theme.global.colors["active"]
+                color: Theme.global.colors["text-black"]
               }}
               onClick={this.props.onItemClick}
-              hoverIndicator="light-2"
+              hoverIndicator="light-5"
             />
           </Box>
-
-          <Box alignSelf="center" pad="none" gridArea="right">
+          <Box
+            background={Theme.global.colors["text-black"]}
+            pad="small"
+            alignContent="center"
+            style={{
+              borderBottomRightRadius: "0.25rem"
+            }}
+          >
             <Button
               plain
               color={Theme.global.colors["text-black"]}
@@ -106,12 +108,12 @@ class ProductItem extends Component {
                 fontSize: "1.3rem",
                 color: Theme.global.colors["active"]
               }}
-              onClick={() => {}}
+              onClick={this.props.onItemClick}
               textAlign="center"
-              hoverIndicator="light-2"
+              hoverIndicator="light-5"
             />
           </Box>
-        </Grid>
+        </Box>
       </ProductItemWrapper>
     );
   }

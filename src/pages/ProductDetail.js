@@ -46,7 +46,9 @@ class ProductDetail extends Component {
   }
 
   render() {
+    console.log("../assets/images/" + this.props.product.thumbnail)
     return (
+      
       <ResponsiveContext.Consumer>
         {size => (
           <Fragment>
@@ -61,7 +63,8 @@ class ProductDetail extends Component {
                   <Image
                     className="GridLeft"
                     fit="cover"
-                    src={require("../assets/images/afghan-flower.gif")}
+                    src={this.props.product.thumbnail ? require("../assets/images/" + this.props.product.thumbnail) : 
+                    require("../assets/images/" + "imageholder.png")}
                   />
                 </Box>
                 <div className="GridRight">

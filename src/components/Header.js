@@ -47,7 +47,7 @@ export default class Header extends Component {
               fontSize: "1.3rem",
               color: Theme.global.colors["white"]
             }}
-            onClick={() => {this.onCategorySelected("Men", 1)}}
+            onClick={() => {this.props.onItemClick(1)}}
             hoverIndicator="#F2B447"
           />
 
@@ -62,7 +62,7 @@ export default class Header extends Component {
               fontSize: "1.3rem",
               color: Theme.global.colors["white"]
             }}
-            onClick={() => {this.onCategorySelected("Women", 2)}}
+            onClick={() => {this.props.onItemClick(2)}}
             hoverIndicator="#F2B447"
           />
 
@@ -77,7 +77,7 @@ export default class Header extends Component {
               fontSize: "1.3rem",
               color: Theme.global.colors["white"]
             }}
-            onClick={() => {this.onCategorySelected("Kids", 3)}}
+            onClick={() => {this.props.onItemClick(3)}}
             hoverIndicator="#F2B447"
           />
 
@@ -89,7 +89,7 @@ export default class Header extends Component {
               fontSize: "1.3rem",
               color: Theme.global.colors["white"]
             }}
-            onClick={() => {this.onCategorySelected("Shoes", 4)}}
+            onClick={() => {this.props.onItemClick(4)}}
             hoverIndicator="#F2B447"
           />
 

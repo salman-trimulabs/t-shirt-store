@@ -6,13 +6,17 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Grid, Box, ResponsiveContext } from "grommet";
 import Routes from "../utils/constants/Routes";
 import Header from "../components/Header";
-
+import { createBrowserHistory } from 'history'
 const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
 }`;
-
+export const history = createBrowserHistory()
 class AppRouter extends Component {
+  onHeaderItemClick = page =>{
+    let path = `/${page}`;
+    history.push(path);
+  }
   render() {
     return (
       <BrowserRouter>
@@ -30,7 +34,7 @@ class AppRouter extends Component {
                     { name: "main", start: [0, 1], end: [0, 1] }
                   ]}
                 >
-                  <Header fill gridArea="header" />
+                  <Header fill gridArea="header" onItemClick={this.onHeaderItemClick.bind(this)}/>
                   <Box
                     fill
                     gridArea="main"
