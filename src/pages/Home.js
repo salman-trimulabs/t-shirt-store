@@ -1,16 +1,12 @@
 import React, { Component, Fragment } from "react";
-import {
-  Heading,
-  ResponsiveContext
-} from "grommet";
+import { Carousel, ResponsiveContext, Box, Image } from "grommet";
 import styled from "styled-components";
-import Theme from "../theme/theme";
 import ProductItem from "../components/ProductCard";
-import {fetchProducts} from "../redux/types/ProductActions";
+import { fetchProducts } from "../redux/types/ProductActions";
 import { connect } from "react-redux";
-import FilterContainer from "../components/FilterProducts"
-import selectProduct from '../selector/SelectProduct';
-
+import FilterContainer from "../components/FilterProducts";
+import selectProduct from "../selector/SelectProduct";
+import { PRODUCT_DETAIL_ROUTE } from "../utils/constants/"
 const CardContainer = styled.div`
   display: grid;
   grid-template-columns: ${props =>
@@ -26,46 +22,50 @@ const CardContainer = styled.div`
   grid-gap: 2.75rem;
 `;
 
-
 class HomePage extends Component {
-
   componentDidMount() {
-    this.props.getProducts(this.props.match.params.id===undefined? 1: this.props.match.params.id);  
+    this.props.getProducts(
+      this.props.match.params.id === undefined ? 1 : this.props.match.params.id
+    );
   }
 
   onProductItemClick = item => {
-    let path = `/detail/${item.product_id}`;
-    this.props.history.push(path);
+    this.props.history.push(PRODUCT_DETAIL_ROUTE + item.product_id);
   };
-
-  onNavigateToRoot = path => {
-    this.props.history.push(path);
-  };
-
 
   render() {
     return (
       <ResponsiveContext.Consumer>
         {size => (
           <Fragment>
-            <Heading
-              color={Theme.global.colors["text-black"]}
-              level={"1"}
-              margin={{
-                top: size === "small" ? "small" : "medium",
-                bottom: size === "small" ? "small" : "medium"
-              }}
-            >
-              Home
-            </Heading>
-            <FilterContainer/>
+            <Box wrap overflow="hidden" alignSelf={"center"}>
+              <Carousel fill controls={"selectors"} play={3000}>
+                <Image
+                  fit="contain"
+                  src={require("../assets/images/swede-santa.gif")}
+                />
+                <Image
+                  fit="contain"
+                  src={require("../assets/images/the-virgin-mary.gif")}
+                />
+                <Image
+                  fit="contain"
+                  src={require("../assets/images/afghan-flower.gif")}
+                />
+
+                <Image
+                  fit="contain"
+                  src={require("../assets/images/thomas-moore.gif")}
+                />
+              </Carousel>
+            </Box>
+            <FilterContainer />
             <CardContainer size={size}>
               {this.props.products.map((item, index) => {
                 return (
                   <ProductItem
                     key={item.product_id}
                     onItemClick={this.onProductItemClick.bind(this, item)}
-                    onLogoClick={this.onNavigateToRoot.bind(this)}
                     item={item}
                   />
                 );

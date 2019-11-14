@@ -12,8 +12,8 @@ import {
 } from "../redux/types/Filters";
 const FilterContainer = styled(Box)`
   width: "100%";
-  margin-bottom: 5.8rem;
-  margin-top: 3rem;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
 
   @media only screen and (max-width: 1050px) {
     flex-direction: column;
@@ -44,6 +44,7 @@ const SearchBarWrapper = styled.div`
     padding-right: 2.5rem;
     font-size: 1rem;
     font-weight: 400;
+    size: "medium";
   }
 `;
 
@@ -76,7 +77,7 @@ class FilterProducts extends Component {
     super(props);
 
     this.state = {
-      searchStr: "Search Product",
+      searchStr: "",
       value: "All",
       order: ["All", "Price High To Low", "Price Low To High"]
     };
@@ -88,7 +89,7 @@ class FilterProducts extends Component {
 
   onSortOptionChange = option => {
     if (option.value === "All") {
-      this.state.searchStr = "";
+      this.setState({searchStr: ""});
       this.props.showAllProducts();
     } else {
       option.value === "Price High To Low"
@@ -101,24 +102,22 @@ class FilterProducts extends Component {
     return (
       <FilterContainer direction="row" justify="between" align="center">
         <SearchWrapper>
-          <Text>Search</Text>
           <SearchBarWrapper>
             <TextInput
-              placeholder={this.state.searchStr}
-              // value={}
+              placeholder={"Search Product"}
+              value={this.state.searchStr}
               onChange={event => {
+                this.setState({
+                  searchStr: event.target.value
+                })
                 this.onSearchProduct(event.target.value);
               }}
-              dropHeight={"small"}
-              size={"medium"}
             />
             <Search color={Theme.global.colors.active} />
           </SearchBarWrapper>
         </SearchWrapper>
 
         <OrderWrapper>
-          <Text>Order</Text>
-
           <Select
             options={this.state.order}
             value={this.state.value}

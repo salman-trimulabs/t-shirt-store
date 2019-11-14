@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchProduct } from "../redux/types/ProductActions";
+import { addCartItem } from "../redux/types/Cart";
 import {
   ResponsiveContext,
   Box,
@@ -16,8 +17,8 @@ import Theme from "../theme/theme";
 import { Cart } from "grommet-icons";
 
 const DetailWrapper = styled(Box)`
-  min-height: 37rem;
-
+  border-radius: 0.25rem;
+  background: ${Theme.global.colors.white};
   @media only screen and (max-width: 1050px) {
     display: flex;
     flex-direction: "column";
@@ -26,7 +27,7 @@ const DetailWrapper = styled(Box)`
 
 const TopDetailGrid = styled.div`
   display: grid;
-
+  direction: row;
   @media only screen and (max-width: 1050px) {
     display: block;
   }
@@ -37,6 +38,21 @@ const TopDetailGrid = styled.div`
   .GridRight {
     grid-column: 2 / span 3;
   }
+`;
+
+const Headings = styled(Heading)`
+  color: ${Theme.global.colors["text-black"]};
+  margin-bottom: 0.3rem;
+`;
+
+const ActionButton = styled(Button)`
+  color: ${Theme.global.colors["text-black"]};
+  border-color: ${Theme.global.colors.white};
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  margin-right: 1rem;
+  padding: 1rem;
+  border-radius: 8rem;
 `;
 
 class ProductDetail extends Component {
@@ -51,24 +67,20 @@ class ProductDetail extends Component {
   componentDidMount() {
     this.props.getProduct(this.props.match.params.id);
   }
+  addItemInCart = item => {
+    this.props.addCartItem(item);
+  };
 
   render() {
-    console.log("../assets/images/" + this.props.product.thumbnail);
     return (
       <ResponsiveContext.Consumer>
         {size => (
           <Fragment>
-            <DetailWrapper
-              round="0.25rem"
-              elevation="medium"
-              background={Theme.global.colors.white}
-              pad="2rem"
-            >
-              <TopDetailGrid size={size} direction="row">
+            <DetailWrapper elevation="medium" pad="medium">
+              <TopDetailGrid size={size}>
                 <Box size={size}>
                   <Image
-                    className="GridLeft"
-                    fit="cover"
+                    fit="contain"
                     src={
                       this.props.product.thumbnail
                         ? require("../assets/images/" +
@@ -78,118 +90,69 @@ class ProductDetail extends Component {
                   />
                 </Box>
                 <div className="GridRight">
-                  <Heading
-                    color={Theme.global.colors["text-black"]}
-                    margin={{
-                      top: "0",
-                      bottom: "small",
-                      left: "0",
-                      right: "0"
-                    }}
-                    level={2}
-                  >
+                  <Heading margin="none" level={2}>
                     {this.props.product.name}
                   </Heading>
                   <Heading
-                    margin={{
-                      top: "0",
-                      bottom: "small",
-                      left: "0",
-                      right: "0"
-                    }}
+                    margin="none"
                     color={Theme.global.colors["active"]}
-                    size="2rem"
+                    level={2}
                   >
                     {this.props.product.price + " $"}
                   </Heading>
 
-                  <Heading
-                    level={4}
-                    margin={{
-                      top: "0",
-                      bottom: "xxsmall",
-                      left: "0",
-                      right: "0"
-                    }}
-                    color={Theme.global.colors["text-black"]}
-                  >
-                    Description
-                  </Heading>
+                  <Headings level={4}>Description</Headings>
                   <Paragraph
                     color={Theme.global.colors["text-black"]}
                     fill={true}
                     responsive={true}
-                    textAlign={"start"}
-                    margin={{
-                      top: "0",
-                      bottom: "xxsmall",
-                      left: "0",
-                      right: "0"
-                    }}
+                    margin="none"
                   >
                     {this.props.product.description}
                   </Paragraph>
-                  <Box>
-                    <Heading
-                      level={4}
-                      margin={{
-                        top: "0",
-                        bottom: "small",
-                        left: "0",
-                        right: "0"
-                      }}
-                      color={Theme.global.colors["text-black"]}
-                    >
-                      Quantity
-                    </Heading>
-                    <TextInput
-                      placeholder="Enter Quantity"
-                      label="Quantity"
-                      type="Number"
-                      value={this.state.quantity}
-                      onChange={event => {
-                        this.setState({ quantity: event.target.value <= 0 ? 1 : event.target.value });
-                      }}
-                    />
-
-                    <Heading
-                      level={4}
-                      margin={{
-                        top: "small",
-                        bottom: "small",
-                        left: "0",
-                        right: "0"
-                      }}
-                      color={Theme.global.colors["text-black"]}
-                    >
-                      Size
-                    </Heading>
-                    <Select
-                      options={this.state.sizes}
-                      value={this.state.defaultSize}
-                      onChange={option => {
-                        this.setState({
-                          defaultSize: option.value
-                        });
-                      }}
-                    />
+                  <Box
+                    direction={"row-responsive"}
+                    justify={"start"}
+                    gap="small"
+                  >
+                    <Box direction={"column"}>
+                      <Headings level={4}>Quantity</Headings>
+                      <TextInput
+                        placeholder="Enter Quantity"
+                        label="Quantity"
+                        type="Number"
+                        value={this.state.quantity}
+                        onChange={event => {
+                          this.setState({
+                            quantity:
+                              event.target.value <= 0 ? 1 : event.target.value
+                          });
+                        }}
+                      />
+                    </Box>
+                    <Box direction={"column"}>
+                      <Headings level={4}>Size</Headings>
+                      <Select
+                        options={this.state.sizes}
+                        value={this.state.defaultSize}
+                        onChange={option => {
+                          this.setState({
+                            defaultSize: option.value
+                          });
+                        }}
+                      />
+                    </Box>
                   </Box>
 
-                  <Box fill justify="end">
-                    <Button
-                      gap="1rem"
-                      alignSelf="end"
-                      icon={<Cart color={Theme.global.colors.active} />}
-                      label="Add to cart"
-                      onClick={() => {}}
-                      margin={{
-                        top: "medium",
-                        bottom: "small",
-                        left: "0",
-                        right: "0"
-                      }}
-                    />
-                  </Box>
+                  <ActionButton
+                    plain
+                    hoverIndicator="#D3923C"
+                    icon={<Cart color={Theme.global.colors["text-black"]} />}
+                    label="Add to cart"
+                    onClick={event => {
+                      this.addItemInCart(this.props.product);
+                    }}
+                  />
                 </div>
               </TopDetailGrid>
             </DetailWrapper>
@@ -205,7 +168,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  getProduct: fetchProduct
+  getProduct: fetchProduct,
+  addCartItem: addCartItem
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);

@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Theme from "../../theme/theme";
 import { Cart, View } from "grommet-icons";
 import TextEllipsis from "react-text-ellipsis";
+import { addCartItem } from "../../redux/types/Cart";
+import { connect } from "react-redux";
+
 const ProductItemWrapper = styled(Box)`
   min-height: 13rem;
   position: relative;
@@ -14,7 +17,19 @@ const ImageContainer = styled(Box)`
   max-height: 5rem;
 `;
 
+const ActionButton = styled(Button)`
+  color: ${Theme.global.colors["text-black"]};
+  border-radius: 0.25rem;
+  font-size: 1.3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+`;
+
 class ProductItem extends Component {
+
+  addItemInCart = item => {
+    this.props.addCartItem(item);
+  }
   render() {
     const { gridArea } = this.props;
     return (
@@ -58,6 +73,7 @@ class ProductItem extends Component {
             </Heading>
           </Box>
         </Box>
+        
         <Box pad="small">
           <TextEllipsis
             lines={2}
@@ -69,54 +85,29 @@ class ProductItem extends Component {
           </TextEllipsis>
         </Box>
         <Box direction="row" height="3.2rem" justify="between">
-          <Box
-            background={Theme.global.colors.active}
-            pad="small"
-            alignContent="center"
-            style={{
-              borderBottomLeftRadius: "0.25rem"
-            }}
-          >
-            <Button
-              plain
-              color={Theme.global.colors["text-black"]}
-              label="View Details"
-              textAlign="center"
-              icon={<View color={Theme.global.colors["text-black"]} />}
-              style={{
-                fontSize: "1.3rem",
-                color: Theme.global.colors["text-black"]
-              }}
-              onClick={this.props.onItemClick}
-              hoverIndicator="light-5"
-            />
-          </Box>
-          <Box
-            background={Theme.global.colors["text-black"]}
-            pad="small"
-            alignContent="center"
-            style={{
-              borderBottomRightRadius: "0.25rem"
-            }}
-          >
-            <Button
-              plain
-              color={Theme.global.colors["text-black"]}
-              icon={<Cart color={Theme.global.colors["active"]} />}
-              label="Add to cart"
-              style={{
-                fontSize: "1.3rem",
-                color: Theme.global.colors["active"]
-              }}
-              onClick={this.props.onItemClick}
-              textAlign="center"
-              hoverIndicator="light-5"
-            />
-          </Box>
+          <ActionButton
+            plain
+            label="View Details"
+            icon={<View color={Theme.global.colors["text-black"]} />}
+            onClick={this.props.onItemClick}
+            hoverIndicator="#D3923C"
+          />
+
+          <ActionButton
+            plain
+            label="Add to cart"
+            icon={<View color={Theme.global.colors["text-black"]} />}
+            onClick={event=>{this.addItemInCart(this.props.item)}}
+            hoverIndicator="#A0A9BA"
+          />
         </Box>
       </ProductItemWrapper>
     );
   }
 }
 
-export default ProductItem;
+const mapDispatchToProps = {
+  addCartItem: addCartItem
+};
+
+export default  connect(null, mapDispatchToProps)(ProductItem);
