@@ -64,15 +64,19 @@ class ProductDetail extends Component {
       sizes: ["Small", "Medium", "Large"]
     };
   }
+
   componentDidMount() {
-    this.props.getProduct(this.props.match.params.id);
+    if (!this.props.product) {
+      this.props.getProduct(this.props.match.params.id);
+    }
   }
+
   addItemInCart = item => {
     this.props.addCartItem(item);
   };
 
   render() {
-    return (
+    let loadProductDetail = (
       <ResponsiveContext.Consumer>
         {size => (
           <Fragment>
@@ -85,7 +89,7 @@ class ProductDetail extends Component {
                       this.props.product.thumbnail
                         ? require("../assets/images/" +
                             this.props.product.thumbnail)
-                        : require("../assets/images/" + "imageholder.png")
+                        : require("../assets/images/".concat("imageholder.png"))
                     }
                   />
                 </Box>
@@ -146,7 +150,7 @@ class ProductDetail extends Component {
 
                   <ActionButton
                     plain
-                    hoverIndicator="#D3923C"
+                    hoverIndicator={Theme.global.colors.active}
                     icon={<Cart color={Theme.global.colors["text-black"]} />}
                     label="Add to cart"
                     onClick={event => {
@@ -160,11 +164,15 @@ class ProductDetail extends Component {
         )}
       </ResponsiveContext.Consumer>
     );
+    let loadingProduct = <h3>Loading...</h3>;
+    let decideView = this.props.product ? loadProductDetail : loadingProduct;
+    return <div>{decideView}</div>;
   }
 }
 
 const mapStateToProps = state => ({
-  product: state.productDetailReducer.product
+  product: state.productReducer.productDetail,
+  path: state.router.location.pathname
 });
 
 const mapDispatchToProps = {

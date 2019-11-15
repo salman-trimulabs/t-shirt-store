@@ -6,6 +6,7 @@ const Theme = {
         height: "2.0rem"
       },
       colors: {
+        red: "#DE665D",
         brand: "#D3923C",
         active: "#D3923C",
         "light-active": "#E1B46E",

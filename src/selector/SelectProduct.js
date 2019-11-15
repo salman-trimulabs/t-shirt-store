@@ -13,5 +13,6 @@ export default (products, filter) => {
     } else if (filter.sortBy === "lowToHigh") {
       return parsePrice(a.price) > parsePrice(b.price) ? 1 : -1;
     }
+    return;
   });
 };

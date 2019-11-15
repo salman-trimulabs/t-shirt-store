@@ -1,7 +1,11 @@
 import productReducer from './ProductsReducer'
-import productDetailReducer from '../reducers/ProductDetail'
 import cartItems from '../reducers/CartItems'
 import filter from '../reducers/Filter'
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 
-export default combineReducers({productReducer, productDetailReducer, filter, cartItems})
+const rootReducer = (history) => combineReducers({
+    productReducer, filter, cartItems,
+    router: connectRouter(history)
+});
+export default rootReducer;

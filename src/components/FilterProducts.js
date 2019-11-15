@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, Box, TextInput, Select } from "grommet";
+import { Box, TextInput, Select } from "grommet";
 import styled from "styled-components";
 import Theme from "../theme/theme";
 import { Search } from "grommet-icons";

@@ -1,21 +1,15 @@
 import { ADD_CART_ITEM, REMOVE_CART_ITEM } from "../../utils/constants";
 
-const initialProductDetails = {
-  name: "Name",
-  price: "0.00",
-  description: "Product description",
-  thumbnail: ""
-};
-
 const CartItems = (
-  state = { item: initialProductDetails },
+  state = { cartItems:[] },
   action
 ) => {
   switch (action.type) {
     case ADD_CART_ITEM:
-      return { ...state, item: action.item };
+      return { ...state, cartItems: [...state.cartItems, action.item]};
     case REMOVE_CART_ITEM:
-      return { ...state, item: action.item };
+      let newCartItems = state.cartItems.filter(item=> action.item.product_id !== item.product_id)
+      return { ...state, cartItems: [...newCartItems]};
     default:
       return state;
   }

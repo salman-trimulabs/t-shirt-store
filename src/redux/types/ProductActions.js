@@ -5,7 +5,7 @@ export const getProducts = (products) => ({
   data: products,
 });
 
-export const getProduct = (product) => ({
+export const showProductDetail = (product) => ({
   type: PRODUCT_DETAIL,
   data: product,
 });
@@ -21,12 +21,12 @@ export const postRequest = () => ({
 export function fetchProducts(page = 1) {
   return function (dispatch) {
   dispatch(preRequest())
-   return fetch(`https://backendapi.turing.com/products?page=${page}&limit=20&description_length=200`)
-      .then(response => response.json())
-      .then((json) => {
-        dispatch(getProducts(json.rows));
-      })
-      .catch( error => console.log('An error occurred.', error),);
+  return fetch(`https://backendapi.turing.com/products?page=${page}&limit=20&description_length=200`)
+  .then(response => response.json())
+  .then((json) => {
+    dispatch(getProducts(json.rows));
+  })
+  .catch( error => console.log('An error occurred.', error),);
   };
 }
 
@@ -36,7 +36,7 @@ export function fetchProduct(id = 1) {
    return fetch(`https://backendapi.turing.com/products/${id}`)
       .then(response => response.json())
       .then((json) => {
-        dispatch(getProduct(json));
+        dispatch(showProductDetail(json));
       })
       .catch( error => console.log('An error occurred.', error),);
   };

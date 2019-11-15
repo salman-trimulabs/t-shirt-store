@@ -3,9 +3,12 @@ import { Box, Button } from "grommet";
 import Theme from "../theme/theme";
 import { Cart } from "grommet-icons";
 import styled from "styled-components";
-import { createBrowserHistory } from "history";
-import { HOME_ROUTE, CART_ROUTE } from "../utils/constants/";
-const history = createBrowserHistory({ forceRefresh: true });
+import { connect } from "react-redux";
+import {
+  pageCategoryRoute,
+  homePageRoute,
+  cartPageRoute
+} from "../redux/types/RouteActions";
 
 const ButtonDiv = styled.div`
   button {
@@ -17,17 +20,17 @@ const ButtonDiv = styled.div`
   }
 `;
 
-export default class Header extends Component {
+class Header extends Component {
   onNavigateToRoot = () => {
-    history.push(HOME_ROUTE);
+    this.props.routeToHomePage();
   };
 
   onHeaderItemClick = page => {
-    history.push(HOME_ROUTE + page);
+    this.props.routeToPage(page);
   };
 
   onCartClick = id => {
-    history.push(CART_ROUTE);
+    this.props.routeToCartPage();
   };
 
   render() {
@@ -96,3 +99,11 @@ export default class Header extends Component {
     );
   }
 }
+
+const mapDispatchToProps = {
+  routeToPage: pageCategoryRoute,
+  routeToHomePage: homePageRoute,
+  routeToCartPage: cartPageRoute,
+};
+
+export default connect(null, mapDispatchToProps)(Header);

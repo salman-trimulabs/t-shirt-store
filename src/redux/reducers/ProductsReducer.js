@@ -1,13 +1,15 @@
-import { PRE_REQUEST, POST_REQUEST, ADD_PRODUCTS } from '../../utils/constants'
+import { PRE_REQUEST, POST_REQUEST, ADD_PRODUCTS, PRODUCT_DETAIL } from '../../utils/constants'
 ;
-const reducer = (state = { products : [] , loading : false }, action) => {
+const reducer = (state = { products : [] }, action) => {
   switch (action.type) {
     case ADD_PRODUCTS: 
-      return {...state, loading: false, products:action.data};
+      return {...state, products:action.data};
+    case PRODUCT_DETAIL:
+      return {...state, productDetail: action.data};
     case PRE_REQUEST:
-        return { ...state, loading: true };
+        return { ...state };
       case POST_REQUEST:
-        return { ...state, loading: false };
+        return { ...state };
     default:
       return state;
   }

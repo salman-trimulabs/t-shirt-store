@@ -2,10 +2,11 @@ import { Grommet } from "grommet";
 import Theme from "../theme/theme";
 import { createGlobalStyle } from "styled-components";
 import React, { Component, Fragment } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Grid, Box, ResponsiveContext } from "grommet";
 import Routes from "../utils/constants/Routes";
 import Header from "../components/Header";
+
 const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
@@ -13,7 +14,6 @@ body {
 class AppRouter extends Component {
   render() {
     return (
-      <BrowserRouter>
         <Grommet theme={Theme}>
           <GlobalStyle />
           <ResponsiveContext.Consumer>
@@ -49,7 +49,6 @@ class AppRouter extends Component {
             )}
           </ResponsiveContext.Consumer>
         </Grommet>
-      </BrowserRouter>
     );
   }
 }

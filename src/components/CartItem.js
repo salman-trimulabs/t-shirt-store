@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Theme from "../theme/theme";
 import { Trash, CoatCheck } from "grommet-icons";
 import TextEllipsis from "react-text-ellipsis";
+import { connect } from "react-redux";
+import { removeCartItem } from "../redux/types/Cart";
 
 const CartItemWrapper = styled(Box)`
   border-radius: 0.25rem;
@@ -36,9 +38,17 @@ const CartActionButtons = styled(Button)`
   border-radius: 8rem;
 `;
 
-class Cart extends Component {
+class CartItem extends Component {
+
+  onProceedCheckout(){
+    window.alert("Page In Progress. Sorry for inconvenience :)");
+  }
+
+  onRemoveCartItem = item => {
+      this.props.removeCartItem(item);
+  }
+
   render() {
-    console.log(this.props.product);
     const { gridArea } = this.props;
     return (
       <CartItemWrapper
@@ -80,16 +90,16 @@ class Cart extends Component {
               plain
               label="Remove from cart"
               icon={<Trash color={Theme.global.colors["text-black"]} />}
-              onClick={this.props.onItemClick}
-              hoverIndicator="#DE665D"
+              onClick={event => {this.onRemoveCartItem(this.props.product)}}
+              hoverIndicator={Theme.global.colors.red}
             />
 
             <CartActionButtons
               plain
               label="Proceed to checkout"
               icon={<CoatCheck color={Theme.global.colors["text-black"]} />}
-              onClick={this.props.onItemClick}
-              hoverIndicator="#D3923C"
+              onClick={event => {this.onProceedCheckout()}}
+              hoverIndicator={Theme.global.colors.brand}
             />
           </Box>
         </Box>
@@ -98,4 +108,8 @@ class Cart extends Component {
   }
 }
 
-export default Cart;
+const mapDispatchToProps = {
+  removeCartItem: removeCartItem,
+};
+
+export default  connect(null, mapDispatchToProps)(CartItem);

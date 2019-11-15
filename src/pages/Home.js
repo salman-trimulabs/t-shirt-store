@@ -6,7 +6,6 @@ import { fetchProducts } from "../redux/types/ProductActions";
 import { connect } from "react-redux";
 import FilterContainer from "../components/FilterProducts";
 import selectProduct from "../selector/SelectProduct";
-import { PRODUCT_DETAIL_ROUTE } from "../utils/constants/"
 const CardContainer = styled.div`
   display: grid;
   grid-template-columns: ${props =>
@@ -24,14 +23,17 @@ const CardContainer = styled.div`
 
 class HomePage extends Component {
   componentDidMount() {
-    this.props.getProducts(
-      this.props.match.params.id === undefined ? 1 : this.props.match.params.id
-    );
+    console.log(this.props.match.params.id);
+    this.props.getProducts(1);
   }
 
-  onProductItemClick = item => {
-    this.props.history.push(PRODUCT_DETAIL_ROUTE + item.product_id);
-  };
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if(nextProps.pageNumber !== null && this.props.pageNumber){
+      if (nextProps.pageNumber !== this.props.pageNumber) {
+        nextProps.getProducts(nextProps.pageNumber.replace('/', ''));
+      }
+    }
+  }
 
   render() {
     return (
@@ -61,12 +63,12 @@ class HomePage extends Component {
             </Box>
             <FilterContainer />
             <CardContainer size={size}>
-              {this.props.products.map((item, index) => {
+              {
+                this.props.products.map((item, index) => {
                 return (
                   <ProductItem
                     key={item.product_id}
-                    onItemClick={this.onProductItemClick.bind(this, item)}
-                    item={item}
+                    product={item}
                   />
                 );
               })}
@@ -79,11 +81,12 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: selectProduct(state.productReducer.products, state.filter)
+  products: selectProduct(state.productReducer.products, state.filter),
+  pageNumber: state.router.location.pathname,
 });
 
 const mapDispatchToProps = {
-  getProducts: fetchProducts
+  getProducts: fetchProducts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
