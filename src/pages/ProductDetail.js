@@ -25,7 +25,7 @@ const DetailWrapper = styled(Box)`
   }
 `;
 
-const TopDetailGrid = styled.div`
+const ItemLayoutStructure = styled.div`
   display: grid;
   direction: row;
   @media only screen and (max-width: 1050px) {
@@ -81,7 +81,7 @@ class ProductDetail extends Component {
         {size => (
           <Fragment>
             <DetailWrapper elevation="medium" pad="medium">
-              <TopDetailGrid size={size}>
+              <ItemLayoutStructure size={size}>
                 <Box size={size}>
                   <Image
                     fit="contain"
@@ -158,7 +158,7 @@ class ProductDetail extends Component {
                     }}
                   />
                 </div>
-              </TopDetailGrid>
+              </ItemLayoutStructure>
             </DetailWrapper>
           </Fragment>
         )}
